@@ -1,4 +1,5 @@
 <script>
+import { createEventDispatcher } from 'svelte';
 import ProgressBar from './ProgressBar.svelte';
 
 const totalTime = 20;
@@ -8,6 +9,8 @@ let buttonClass = 'start';
 let buttonLabel = 'Start';
 $: progressPercentage = 100 - 100*(secondsLeft/totalTime);
 
+const dispatchEvent = createEventDispatcher();
+
 function startTimer() {
     if(buttonLabel === 'Start') {
         controlButton(true);
@@ -16,6 +19,7 @@ function startTimer() {
             if(secondsLeft === 0) {
                 clearInterval(timer);
                 controlButton(false);
+                dispatchEvent('timerend', {totalTime});
             }
         }, 1000);
     } else {
